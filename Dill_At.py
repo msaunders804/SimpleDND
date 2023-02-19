@@ -32,6 +32,13 @@ class Character:
         self.AC = 0
         self.speed = 30
         self.current_HP = 0
+        self.save_prof = []
+        self.skill_prof = []
+        self.weapon_prof = []
+        self.armor_prof = []
+        self.tool_prof = []
+
+
 
 # Functions and design related to the character creation page (Includes: Update_Score_Options, Subclass, Create_Character_Object, Set_Modifiers, Submit)
 def NewChar():
@@ -53,6 +60,13 @@ def NewChar():
     char_subclass_options = ["Not High Enough Level"]
     subclassVar = StringVar(NewCharPage)
     subclassVar.set(char_subclass_options[0])
+
+    back_options = ["Acolyte","Criminal/Spy","Folk Hero","Noble","Sage","Solider"]
+    backVar = StringVar(NewCharPage)
+    backVar.set(back_options[0])
+
+    skill_options = ['']
+    skillVar = tk.Variable(value=skill_options)
 
     race_options = ["Dragonborne", "Dwarf", "Elf", "Gnome", "Half-elf", "Halfling", "Half-Orc", "Human", "Tiefling",
                     "Leonin",
@@ -147,10 +161,20 @@ def NewChar():
             chastatVar.set(stat_options[0])
 
     # Creates dropdowns for subclass options based on class choice
-    def subclass(selection):
+    def Class_Specific_Attributes(selection):
         # Update subclass options based on class selection
-        if levelVar.get() >= 3:
-            if classVar.get() == "Barbarian":
+        if classVar.get() == "Barbarian":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Animal Handling", "Athletics", "Intimidation", "Nature", "Perception", "Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -163,7 +187,20 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Bard":
+        elif classVar.get() == "Bard":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Acrobatics","Animal Handling", "Arcana","Athletics","Deception","History","Insight",
+                             "Intimidation", "Investigation", "Medicine","Nature", "Perception", "Performance",
+                             "Persuasion","Religion", "Sleight of Hand","Stealth","Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -176,7 +213,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Cleric":
+        elif classVar.get() == "Cleric":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = [ "History", "Insight", "Medicine",
+                             "Persuasion", "Religion",]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -190,7 +239,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Druid":
+        elif classVar.get() == "Druid":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Animal Handling", "Arcana", "Insight",
+                             "Medicine", "Nature", "Perception", "Religion",  "Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -201,7 +262,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Fighter":
+        elif classVar.get() == "Fighter":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight",
+                             "Intimidation", "Perception", "Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -214,7 +287,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Monk":
+        elif classVar.get() == "Monk":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Acrobatics", "Athletics", "History", "Insight",
+                             "Religion", "Stealth"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -227,7 +312,20 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Paladin":
+        elif classVar.get() == "Paladin":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = [ "Athletics", "Insight",
+                             "Intimidation", "Medicine",
+                             "Persuasion", "Religion"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -239,7 +337,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Ranger":
+        elif classVar.get() == "Ranger":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Animal Handling", "Athletics","Insight",
+                             "Investigation", "Nature", "Perception", "Stealth", "Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -251,7 +361,20 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Rogue":
+        elif classVar.get() == "Rogue":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Acrobatics", "Athletics", "Deception","Insight",
+                             "Intimidation", "Investigation",  "Perception", "Performance",
+                             "Persuasion", "Sleight of Hand", "Stealth"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -262,7 +385,20 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Sorcerer":
+        elif classVar.get() == "Sorcerer":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Arcana", "Deception","Insight",
+                             "Intimidation",
+                             "Persuasion", "Religion"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -273,7 +409,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Wizard":
+        elif classVar.get() == "Wizard":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Arcana","History", "Insight",
+                             "Investigation", "Medicine","Religion"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -286,7 +434,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Warlock":
+        elif classVar.get() == "Warlock":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = [ "Arcana","Deception", "History",
+                             "Intimidation", "Investigation", "Nature", "Religion"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -297,7 +457,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Artificer":
+        elif classVar.get() == "Artificer":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Arcana", "History",
+                              "Investigation", "Medicine", "Nature", "Perception", "Sleight of Hand"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -307,7 +479,19 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-            elif classVar.get() == "Blood Hunter":
+        elif classVar.get() == "Blood Hunter":
+            skillVar.set('')
+            listbox.delete(0, 'end')
+
+            skill_options = ["Acrobatics","Arcana", "Athletics","History", "Insight",
+                             "Investigation", "Religion", "Survival"]
+
+            for x in skill_options:
+                listbox.insert(END, x)
+
+            skillVar.set(skill_options[0])
+
+            if levelVar.get() >= 3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -318,7 +502,7 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-        else:
+        if levelVar.get() <= 3:
             subclassVar.set('')
             subclass['menu'].delete(0, 'end')
 
@@ -329,21 +513,50 @@ def NewChar():
 
             subclassVar.set(char_subclass_options[0])
 
+    # VISUAL ISSUE __ OVERLAY RATHER THAN REPLACE
+    def Display_Back_Skills(selection):
+            back = Label(NewCharPage, text="Select Background")
+            back.grid(row=3,column=4)
+            if backVar.get() == "Acolyte":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: Insight, Religion")
+                back.grid(row=3,column=4)
+            elif backVar.get() == "Criminal/Spy":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: Deception, Stealth")
+                back.grid(row=3,column=4)
+            elif backVar.get() == "Folk Hero":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: Animal Handling, Survival")
+                back.grid(row=3,column=4)
+            elif backVar.get() == "Noble":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: History, Persuasion")
+                back.grid(row=3,column=4)
+            elif backVar.get() == "Solider":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: Athletics, Intimidation")
+                back.grid(row=3,column=4)
+            elif backVar.get() == "Sage":
+                back.destroy()
+                back = Label(NewCharPage, text= "Skills: Arcana, History")
+                back.grid(row=3,column=4)
+
     # diplay entries
     name = Entry(NewCharPage, width=40)
     name.grid(row=1, column=1, padx=20)
-    level = OptionMenu(NewCharPage, levelVar, *Level_options, command=subclass)
+    level = OptionMenu(NewCharPage, levelVar, *Level_options, command=Class_Specific_Attributes)
     level.grid(row=1, column=3)
-    char_class = OptionMenu(NewCharPage, classVar, *char_class_options, command=subclass)
+    char_class = OptionMenu(NewCharPage, classVar, *char_class_options, command=Class_Specific_Attributes)
     char_class.grid(row=2, column=1)
     subclass = OptionMenu(NewCharPage, subclassVar, *char_subclass_options)
     subclass.grid(row=2, column=3)
     race = OptionMenu(NewCharPage, raceVar, *race_options)
     race.grid(row=3, column=1)
-    background = Entry(NewCharPage, width=40)
+    background = OptionMenu(NewCharPage, backVar, *back_options, command=Display_Back_Skills)
     background.grid(row=3, column=3)
     stat_type = OptionMenu(NewCharPage, statTypeVar, *stat_type_options, command=Update_Score_Options)
-    stat_type.grid(row=3, column=4)
+    stat_type.grid(row=1, column=5)
 
     str = OptionMenu(NewCharPage, strstatVar, *stat_options)
     str.grid(row=4, column=1)
@@ -357,9 +570,23 @@ def NewChar():
     wis.grid(row=6, column=1)
     cha = OptionMenu(NewCharPage, chastatVar, *stat_options)
     cha.grid(row=6, column=3)
+    listbox = tk.Listbox(NewCharPage,listvariable=skill_options, height=6, selectmode=tk.MULTIPLE)
+    listbox.grid(row=8,column=2)
+
+    # DOES NOT WORK
+    def items_selected(event):
+        # get selected indices
+        selected_indices = listbox.curselection()
+        skills = []
+        # get selected items
+        for i in selected_indices:
+            skills.append(listbox.get(i))
+
+    listbox.bind('<<ListboxSelect>>', items_selected)
 
     Label(NewCharPage, text="Name: ", font=("Arial", 15)).grid(row=1, column=0)
     Label(NewCharPage, text="Level: ", font=("Arial", 15)).grid(row=1, column=2)
+    Label(NewCharPage, text="Gen Method: ", font=("Arial", 15)).grid(row=1, column=4)
     Label(NewCharPage, text="Class: ", font=("Arial", 15)).grid(row=2, column=0)
     Label(NewCharPage, text="Subclass: ", font=("Arial", 15)).grid(row=2, column=2)
     Label(NewCharPage, text="Race: ", font=("Arial", 15)).grid(row=3, column=0)
@@ -370,9 +597,10 @@ def NewChar():
     Label(NewCharPage, text="Int: ", font=("Arial", 15)).grid(row=5, column=2)
     Label(NewCharPage, text="Wis: ", font=("Arial", 15)).grid(row=6, column=0)
     Label(NewCharPage, text="Cha: ", font=("Arial", 15)).grid(row=6, column=2)
+    Label(NewCharPage, text="Skill Proficiencies:",font=("Arial", 15)).grid(row=8, column=0)
 
-    # Function that creates the actual Character object
-    def create_Character_Object(char_dict):
+    # Function that finds background Attributes
+    def Generate_Character_Attributes(char_dict):
         # Function to create other stats based on character information
         # speed set to 30 unless (Check Race things)
         if char_dict[name.get()].race == "Air Genasi" or char_dict[name.get()].race == "Dhampir" or char_dict[
@@ -409,6 +637,27 @@ def NewChar():
             char_dict[name.get()].proficiency = 6
         #AC Calculation Starts with no armor assumption
         char_dict[name.get()].AC = 10 + char_dict[name.get()].dex_mod
+        #Skill Proficiencies based on Background
+        if char_dict[name.get()].background == "Acolyte":
+            char_dict[name.get()].skill_prof.append("Insight")
+            char_dict[name.get()].skill_prof.append("Religion")
+        elif char_dict[name.get()].background == "Criminal/Spy":
+            char_dict[name.get()].skill_prof.append("Deception")
+            char_dict[name.get()].skill_prof.append("Stealth")
+        elif char_dict[name.get()].background == "Folk Hero":
+            char_dict[name.get()].skill_prof.append("Animal Handling")
+            char_dict[name.get()].skill_prof.append("Survival")
+        elif char_dict[name.get()].background == "Noble":
+            char_dict[name.get()].skill_prof.append("History")
+            char_dict[name.get()].skill_prof.append("Persuasion")
+        elif char_dict[name.get()].background == "Solider":
+            char_dict[name.get()].skill_prof.append("Athletics")
+            char_dict[name.get()].skill_prof.append("Intimidation")
+        elif char_dict[name.get()].background == "Sage":
+            char_dict[name.get()].skill_prof.append("Arcana")
+            char_dict[name.get()].skill_prof.append("History")
+
+
 
 
     # Determines modifers
@@ -593,18 +842,18 @@ def NewChar():
     def submit():
         # connect to db to add information
 
-        char_dict[name.get()] = Character(name.get(), raceVar.get(), classVar.get(), subclassVar.get(),background.get(), levelVar.get(),
+        char_dict[name.get()] = Character(name.get(), raceVar.get(), classVar.get(), subclassVar.get(),backVar.get(), levelVar.get(),
                                           int(strstatVar.get()), int(dexstatVar.get()), int(constatVar.get()),
                                           int(wisstatVar.get()), int(intstatVar.get()), int(chastatVar.get()))
         Set_Modifiers(char_dict)
-        create_Character_Object(char_dict)
+        Generate_Character_Attributes(char_dict)
 
         name.delete(0, END)
         levelVar.set(Level_options[0])
         classVar.set(char_class_options[0])
         subclassVar.set(char_subclass_options[0])
         raceVar.set(race_options[0])
-        background.delete(0, END)
+        backVar.set(back_options[0])
         strstatVar.set(stdarr_stats_options[0])
         constatVar.set(stdarr_stats_options[0])
         dexstatVar.set(stdarr_stats_options[0])
@@ -615,7 +864,7 @@ def NewChar():
         Label(NewCharPage, text="Character Successfully Added. You may now enter another character or exit the page ",
               font=('arial', 15), bg='yellow').place(relx=0.1, rely=0.7)
 
-    Button(NewCharPage, text="Create Character", command=submit).grid(row=7, column=2, columnspan=2)
+    Button(NewCharPage, text="Create Character", command=submit).grid(row=7, column=5, columnspan=2)
 
 
 def close():
@@ -639,7 +888,7 @@ def View():
         Label(ViewCharPage, text="HP:", background='black', foreground='red').place(relx=0.2, rely=0.1)
         curr_HP = tk.IntVar()
         curr_HP.set(char_dict[set_name.get()].current_HP-.1)
-        #Works but very hard to see as it is Grey on Grey
+        #Works but very hard to see as it is Grey on Grey no bueno
         s = ttk.Style()
         s.theme_use('clam')
         s.configure("red.Horizontal.TProgressbar", background='red')
@@ -656,6 +905,7 @@ def View():
               foreground='red').place(relx=0.0, rely=0.6)
         Label(ViewCharPage, text="CHA\n" + str(char_dict[set_name.get()].cha_mod), background='black', borderwidth=1, relief="solid",
               foreground='red').place(relx=0.0, rely=0.7)
+        Label(ViewCharPage, text="Skill Proficiencies:" + str(char_dict[set_name.get()].skill_prof), background='black').place(relx=0.2,rely=0.3)
 
 
     Label(ViewCharPage, text="Your Character", fg='red', bg='black', font=('arial', 15)).place(relx=0.0, rely=0.0)
