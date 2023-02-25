@@ -1,7 +1,7 @@
 # Application to simplify play with high level characters
 import tkinter as tk
 from tkinter import *
-import sqlite3
+from operator import itemgetter
 import dill
 from tkinter import ttk
 from Classes import *
@@ -37,6 +37,7 @@ class Character:
         self.weapon_prof = []
         self.armor_prof = []
         self.tool_prof = []
+        self.skill_scores=[]
 
 
 
@@ -67,6 +68,15 @@ def NewChar():
 
     skill_options = ['']
     skillVar = tk.Variable(value=skill_options)
+
+    music_options = ['Bagpipes', 'Drum', 'Dulcimer', 'Flute', 'Lute', 'Lyre', 'Horn', 'Pan Flute', 'Shawm', 'Viol']
+    musicVar = tk.Variable(value=music_options)
+
+    tool_options = ['Alchemists','Brewers','Calligraphers','Carpenters','Cartographers','Cobblers','Cooks','Glassblowers'
+        ,'Jewelers','Leatherworkers','Masons','Painters','Potters','Smiths','Tinkers','Weavers','Woodcarvers']
+
+    monk_options = ['Instrument','Artisan Tools']
+    monkVar = StringVar(NewCharPage)
 
     race_options = ["Dragonborne", "Dwarf", "Elf", "Gnome", "Half-elf", "Halfling", "Half-Orc", "Human", "Tiefling",
                     "Leonin",
@@ -105,7 +115,7 @@ def NewChar():
             wisstatVar.set('')
             chastatVar.set('')
 
-            str['menu'].delete(0, 'end')
+            str_opt['menu'].delete(0, 'end')
             con['menu'].delete(0, 'end')
             dex['menu'].delete(0, 'end')
             intell['menu'].delete(0, 'end')
@@ -115,7 +125,7 @@ def NewChar():
             stat_options = stdarr_stats_options
 
             for x in stat_options:
-                str['menu'].add_command(label=x, command=tk._setit(strstatVar, x))
+                str_opt['menu'].add_command(label=x, command=tk._setit(strstatVar, x))
                 con['menu'].add_command(label=x, command=tk._setit(constatVar, x))
                 dex['menu'].add_command(label=x, command=tk._setit(dexstatVar, x))
                 wis['menu'].add_command(label=x, command=tk._setit(wisstatVar, x))
@@ -136,7 +146,7 @@ def NewChar():
             wisstatVar.set('')
             chastatVar.set('')
 
-            str['menu'].delete(0, 'end')
+            str_opt['menu'].delete(0, 'end')
             con['menu'].delete(0, 'end')
             dex['menu'].delete(0, 'end')
             intell['menu'].delete(0, 'end')
@@ -146,7 +156,7 @@ def NewChar():
             stat_options = Level_options
 
             for x in stat_options:
-                str['menu'].add_command(label=x, command=tk._setit(strstatVar, x))
+                str_opt['menu'].add_command(label=x, command=tk._setit(strstatVar, x))
                 con['menu'].add_command(label=x, command=tk._setit(constatVar, x))
                 dex['menu'].add_command(label=x, command=tk._setit(dexstatVar, x))
                 wis['menu'].add_command(label=x, command=tk._setit(wisstatVar, x))
@@ -160,10 +170,17 @@ def NewChar():
             wisstatVar.set(stat_options[0])
             chastatVar.set(stat_options[0])
 
+            return
+
     # Creates dropdowns for subclass options based on class choice
     def Class_Specific_Attributes(selection):
         # Update subclass options based on class selection
         if classVar.get() == "Barbarian":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -174,7 +191,9 @@ def NewChar():
 
             skillVar.set(skill_options[0])
 
-            if levelVar.get() >= 3:
+
+
+            if levelVar.get() >=3:
                 subclassVar.set('')
                 subclass['menu'].delete(0, 'end')
 
@@ -188,6 +207,10 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Bard":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -199,6 +222,10 @@ def NewChar():
                 listbox.insert(END, x)
 
             skillVar.set(skill_options[0])
+
+            #dealing with Musical tool choices
+            Tool_label.grid(row=8, column=3)
+            musicbox.grid(row=8, column=4)
 
             if levelVar.get() >= 3:
                 subclassVar.set('')
@@ -214,6 +241,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Cleric":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -240,6 +272,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Druid":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -263,6 +300,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Fighter":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -288,8 +330,13 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Monk":
+            Tool_label.forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
+            monk_choice1.grid(row=8,column=3)
+            monk_choice2.grid(row=8,column=4)
 
             skill_options = ["Acrobatics", "Athletics", "History", "Insight",
                              "Religion", "Stealth"]
@@ -313,6 +360,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Paladin":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -338,6 +390,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Ranger":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -362,6 +419,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Rogue":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -386,6 +448,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Sorcerer":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -410,6 +477,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Wizard":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -435,6 +507,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Warlock":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -458,6 +535,10 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Artificer":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -468,6 +549,9 @@ def NewChar():
                 listbox.insert(END, x)
 
             skillVar.set(skill_options[0])
+
+            Tool_label.grid(row=8, column=3)
+            toolbox.grid(row=8, column=4)
 
             if levelVar.get() >= 3:
                 subclassVar.set('')
@@ -480,6 +564,11 @@ def NewChar():
 
                 subclassVar.set(char_subclass_options[0])
         elif classVar.get() == "Blood Hunter":
+            Tool_label.forget()
+            monk_choice1.grid_forget()
+            monk_choice2.grid_forget()
+            musicbox.grid_forget()
+            toolbox.grid_forget()
             skillVar.set('')
             listbox.delete(0, 'end')
 
@@ -502,7 +591,7 @@ def NewChar():
                     subclass['menu'].add_command(label=x, command=tk._setit(subclassVar, x))
 
                 subclassVar.set(char_subclass_options[0])
-        if levelVar.get() <= 3:
+        if levelVar.get() < 3:
             subclassVar.set('')
             subclass['menu'].delete(0, 'end')
 
@@ -513,34 +602,58 @@ def NewChar():
 
             subclassVar.set(char_subclass_options[0])
 
+    def Count_Proficiencies_Selected(selection):
+        #Use a counter to prevent additional selections if too many
+        if classVar.get() == "Bard" or classVar.get() == "Ranger" or classVar.get() == "Blood Hunter":
+            if len(listbox.curselection()) > 3:
+                listbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 3 additional skills").grid(row=8,column=2)
+        elif classVar.get() == "Rogue":
+            if len(listbox.curselection()) > 4:
+                listbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 4 additional skills").grid(row=8,column=2)
+        else:
+            if len(listbox.curselection()) > 2:
+                listbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 2 additional skills").grid(row=8,column=2)
+        if classVar.get() == "Bard":
+            if len(musicbox.curselection()) > 3:
+                musicbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 3 Instruments").grid(row=8,column=5)
+        if classVar.get() == "Artificer":
+            if len(toolbox.curselection()) > 1:
+                toolbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 1 Tool").grid(row=8, column=5)
+        if classVar.get() == "Monk":
+            if len(toolbox.curselection()) > 1 or len(musicbox.curselection()) > 1:
+                toolbox.selection_clear('active')
+                musicbox.selection_clear('active')
+                Label(NewCharPage, text="You can only select 1 Tool").grid(row=8, column=5)
     # VISUAL ISSUE __ OVERLAY RATHER THAN REPLACE
     def Display_Back_Skills(selection):
-            back = Label(NewCharPage, text="Select Background")
-            back.grid(row=3,column=4)
-            if backVar.get() == "Acolyte":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: Insight, Religion")
-                back.grid(row=3,column=4)
-            elif backVar.get() == "Criminal/Spy":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: Deception, Stealth")
-                back.grid(row=3,column=4)
-            elif backVar.get() == "Folk Hero":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: Animal Handling, Survival")
-                back.grid(row=3,column=4)
-            elif backVar.get() == "Noble":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: History, Persuasion")
-                back.grid(row=3,column=4)
-            elif backVar.get() == "Solider":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: Athletics, Intimidation")
-                back.grid(row=3,column=4)
-            elif backVar.get() == "Sage":
-                back.destroy()
-                back = Label(NewCharPage, text= "Skills: Arcana, History")
-                back.grid(row=3,column=4)
+        if backVar.get() == "Acolyte":
+            Back_Label.config(text="Skills: Insight, Religion")
+        elif backVar.get() == "Criminal/Spy":
+            Back_Label.config(text= "Skills: Deception, Stealth")
+        elif backVar.get() == "Folk Hero":
+            Back_Label.config(text= "Skills: Animal Handling, Survival")
+        elif backVar.get() == "Noble":
+            Back_Label.config(text= "Skills: History, Persuasion")
+        elif backVar.get() == "Solider":
+            Back_Label.config(text= "Skills: Athletics, Intimidation")
+        elif backVar.get() == "Sage":
+            Back_Label.config(text= "Skills: Arcana, History")
+
+
+    def Monk_choice_setup(selection):
+        if monkVar.get() == "Instrument":
+            musicbox.grid_forget()
+            toolbox.grid_forget()
+            musicbox.grid(row=9, column=4)
+        elif monkVar.get() == "Artisan Tools":
+            musicbox.grid_forget()
+            toolbox.grid_forget()
+            toolbox.grid(row=9, column=4)
 
     # diplay entries
     name = Entry(NewCharPage, width=40)
@@ -558,8 +671,8 @@ def NewChar():
     stat_type = OptionMenu(NewCharPage, statTypeVar, *stat_type_options, command=Update_Score_Options)
     stat_type.grid(row=1, column=5)
 
-    str = OptionMenu(NewCharPage, strstatVar, *stat_options)
-    str.grid(row=4, column=1)
+    str_opt = OptionMenu(NewCharPage, strstatVar, *stat_options)
+    str_opt.grid(row=4, column=1)
     dex = OptionMenu(NewCharPage, dexstatVar, *stat_options)
     dex.grid(row=4, column=3)
     con = OptionMenu(NewCharPage, constatVar, *stat_options)
@@ -570,19 +683,19 @@ def NewChar():
     wis.grid(row=6, column=1)
     cha = OptionMenu(NewCharPage, chastatVar, *stat_options)
     cha.grid(row=6, column=3)
-    listbox = tk.Listbox(NewCharPage,listvariable=skill_options, height=6, selectmode=tk.MULTIPLE)
-    listbox.grid(row=8,column=2)
-
-    # DOES NOT WORK
-    def items_selected(event):
-        # get selected indices
-        selected_indices = listbox.curselection()
-        skills = []
-        # get selected items
-        for i in selected_indices:
-            skills.append(listbox.get(i))
-
-    listbox.bind('<<ListboxSelect>>', items_selected)
+    listbox = tk.Listbox(NewCharPage,listvariable=skill_options, height=6, selectmode=tk.MULTIPLE,exportselection=False)
+    listbox.grid(row=8,column=1)
+    listbox.bind("<<ListboxSelect>>", Count_Proficiencies_Selected)
+    musicbox = tk.Listbox(NewCharPage,height=6, selectmode=tk.MULTIPLE,exportselection=False)
+    for i in music_options:
+        musicbox.insert(END, i)
+    musicbox.bind("<<ListboxSelect>>", Count_Proficiencies_Selected)
+    toolbox = tk.Listbox(NewCharPage, height=6, selectmode=tk.MULTIPLE, exportselection=False)
+    for i in tool_options:
+        toolbox.insert(END, i)
+    toolbox.bind("<<ListboxSelect>>", Count_Proficiencies_Selected)
+    monk_choice1 = Label(NewCharPage,text="Instrument or Artisian Tools?")
+    monk_choice2 = OptionMenu(NewCharPage, monkVar, *monk_options, command=Monk_choice_setup)
 
     Label(NewCharPage, text="Name: ", font=("Arial", 15)).grid(row=1, column=0)
     Label(NewCharPage, text="Level: ", font=("Arial", 15)).grid(row=1, column=2)
@@ -598,6 +711,9 @@ def NewChar():
     Label(NewCharPage, text="Wis: ", font=("Arial", 15)).grid(row=6, column=0)
     Label(NewCharPage, text="Cha: ", font=("Arial", 15)).grid(row=6, column=2)
     Label(NewCharPage, text="Skill Proficiencies:",font=("Arial", 15)).grid(row=8, column=0)
+    Tool_label = Label(NewCharPage, text="Tool Proficiencies:",font=("Arial", 15))
+    Back_Label = Label(NewCharPage, text="Select Background",font=("Arial", 15))
+    Back_Label.grid(row=3,column=4)
 
     # Function that finds background Attributes
     def Generate_Character_Attributes(char_dict):
@@ -656,7 +772,51 @@ def NewChar():
         elif char_dict[name.get()].background == "Sage":
             char_dict[name.get()].skill_prof.append("Arcana")
             char_dict[name.get()].skill_prof.append("History")
+        #Set Skill scores
+        str_skills = ["Athletics"]
+        dex_skills = ["Acrobatics","Sleight of Hand","Stealth"]
+        int_skills = ["Arcana","History","Investigation","Nature","Religion"]
+        wis_skills=["Animal Handling","Insight","Medicine","Perception","Survival"]
+        cha_skills =["Deception","Intimidation","Performance","Persuasion"]
 
+        for prof in char_dict[name.get()].skill_prof:
+            for skill in str_skills:
+                if skill == prof:
+                    char_dict[name.get()].skill_scores.append([prof,char_dict[name.get()].str_mod + char_dict[name.get()].proficiency])
+                    str_skills.remove(skill)
+        for prof in char_dict[name.get()].skill_prof:
+            for skill in dex_skills:
+                if skill in char_dict[name.get()].skill_prof:
+                    char_dict[name.get()].skill_scores.append([prof,char_dict[name.get()].dex_mod + char_dict[name.get()].proficiency])
+                    dex_skills.remove(skill)
+        for prof in char_dict[name.get()].skill_prof:
+            for skill in int_skills:
+                if prof == skill:
+                    char_dict[name.get()].skill_scores.append([prof, char_dict[name.get()].intell_mod + char_dict[name.get()].proficiency])
+                    int_skills.remove(skill)
+        for prof in char_dict[name.get()].skill_prof:
+            for skill in wis_skills:
+                if prof == skill:
+                    char_dict[name.get()].skill_scores.append([prof,char_dict[name.get()].wis_mod + char_dict[name.get()].proficiency])
+                    wis_skills.remove(skill)
+        for prof in char_dict[name.get()].skill_prof:
+            for skill in cha_skills:
+                if prof == skill:
+                    char_dict[name.get()].skill_scores.append([prof,char_dict[name.get()].cha_mod + char_dict[name.get()].proficiency])
+                    cha_skills.remove(skill)
+
+        for skill in str_skills:
+            char_dict[name.get()].skill_scores.append( [skill, char_dict[name.get()].str_mod])
+        for skill in dex_skills:
+            char_dict[name.get()].skill_scores.append( [skill, char_dict[name.get()].dex_mod])
+        for skill in int_skills:
+            char_dict[name.get()].skill_scores.append( [skill, char_dict[name.get()].intell_mod])
+        for skill in wis_skills:
+            char_dict[name.get()].skill_scores.append([skill, char_dict[name.get()].wis_mod])
+        for skill in cha_skills:
+            char_dict[name.get()].skill_scores.append([skill, char_dict[name.get()].cha_mod])
+
+        char_dict[name.get()].skill_scores.sort(key=lambda x: x[0])
 
 
 
@@ -838,6 +998,80 @@ def NewChar():
         char_dict[name.get()].wis_mod = modifiers[4]
         char_dict[name.get()].cha_mod = modifiers[5]
 
+    # Sets armor,weapon, tool prof,Saving Throws
+    def Set_Class_Info(char_dict):
+        if char_dict[name.get()].char_class == 'Barbarian':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Martial Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Strength','Constitution']
+        elif char_dict[name.get()].char_class == 'Bard':
+            char_dict[name.get()].armor_prof = ['Light Armor']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Hand Crossbows','Longswords','rapiers','Shortswords']
+            char_dict[name.get()].save_prof = ['Dexterity','Charisma']
+        elif char_dict[name.get()].char_class == 'Cleric':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Wisdom', 'Charisma']
+        elif char_dict[name.get()].char_class == 'Druid':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Clubs','Daggers','Darts','Javelins','Maces','Quaterstaffs','Scimitars'
+                ,'Sickles','Slings','Spears']
+            char_dict[name.get()].tool_prof = ['Herbalism Kit']
+            char_dict[name.get()].save_prof = ['Wisdom', 'Intelligence']
+        elif char_dict[name.get()].char_class == 'Fighter':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Heavy Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Martial Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Strength','Constitution']
+        elif char_dict[name.get()].char_class == 'Monk':
+            char_dict[name.get()].armor_prof = ['']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Short Swords']
+            char_dict[name.get()].save_prof = ['Strength','Dexterity']
+        elif char_dict[name.get()].char_class == 'Paladin':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Heavy Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Martial Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Wisdom', 'Charisma']
+        elif char_dict[name.get()].char_class == 'Rogue':
+            char_dict[name.get()].armor_prof = ['Light Armor']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons', 'Hand Crossbows','Longswords','Rapiers','Shortswords']
+            char_dict[name.get()].tool_prof = ['Thieves']
+            char_dict[name.get()].save_prof = ['Dexterity', 'Intelligence']
+        elif char_dict[name.get()].char_class == 'Ranger':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons','Martial Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Strength','Dexterity']
+        elif char_dict[name.get()].char_class == 'Wizard':
+            char_dict[name.get()].armor_prof = ['']
+            char_dict[name.get()].weapon_prof = ['Daggers','Darts','Slings','Quaterstaffs','Light Crossbows']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Intelligence','Wisdom']
+        elif char_dict[name.get()].char_class == 'Warlock':
+            char_dict[name.get()].armor_prof = ['Light Armor']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Wisdom','Charisma']
+        elif char_dict[name.get()].char_class == 'Sorcerer':
+            char_dict[name.get()].armor_prof = ['']
+            char_dict[name.get()].weapon_prof = ['Daggers','Darts','Slings','Quaterstaffs','Light Crossbows']
+            char_dict[name.get()].tool_prof = ['']
+            char_dict[name.get()].save_prof = ['Constitution','Charisma']
+        elif char_dict[name.get()].char_class == 'Artificer':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons']
+            tools = ['Thieves','Tinkers']
+            for x in tools:
+                char_dict[name.get()].tool_prof.append(x)
+            char_dict[name.get()].save_prof = ['Constitution','Intelligence']
+        elif char_dict[name.get()].char_class == 'Blood Hunter':
+            char_dict[name.get()].armor_prof = ['Light Armor','Medium Armor','Shields']
+            char_dict[name.get()].weapon_prof = ['Simple Weapons', 'Martial Weapons']
+            char_dict[name.get()].tool_prof = ['Alchemists']
+            char_dict[name.get()].save_prof = ['Dexterity','Intelligence']
+
     #Submits character and clears entry form
     def submit():
         # connect to db to add information
@@ -845,8 +1079,13 @@ def NewChar():
         char_dict[name.get()] = Character(name.get(), raceVar.get(), classVar.get(), subclassVar.get(),backVar.get(), levelVar.get(),
                                           int(strstatVar.get()), int(dexstatVar.get()), int(constatVar.get()),
                                           int(wisstatVar.get()), int(intstatVar.get()), int(chastatVar.get()))
+        for i in listbox.curselection():
+            char_dict[name.get()].skill_prof.append(listbox.get(i))
+        for x in musicbox.curselection():
+            char_dict[name.get()].tool_prof.append(musicbox.get(x))
         Set_Modifiers(char_dict)
         Generate_Character_Attributes(char_dict)
+        Set_Class_Info(char_dict)
 
         name.delete(0, END)
         levelVar.set(Level_options[0])
@@ -860,11 +1099,13 @@ def NewChar():
         intstatVar.set(stdarr_stats_options[0])
         wisstatVar.set(stdarr_stats_options[0])
         chastatVar.set(stdarr_stats_options[0])
+        listbox.selection_clear(0, 'end')
+
 
         Label(NewCharPage, text="Character Successfully Added. You may now enter another character or exit the page ",
-              font=('arial', 15), bg='yellow').place(relx=0.1, rely=0.7)
+              font=('arial', 15), bg='yellow').place(relx=0.15, rely=0.7)
 
-    Button(NewCharPage, text="Create Character", command=submit).grid(row=7, column=5, columnspan=2)
+    Button(NewCharPage, text="Create Character", command=submit, height=3, width=25,background='red').place(relx=0.3, rely=0.6)
 
 
 def close():
@@ -905,7 +1146,11 @@ def View():
               foreground='red').place(relx=0.0, rely=0.6)
         Label(ViewCharPage, text="CHA\n" + str(char_dict[set_name.get()].cha_mod), background='black', borderwidth=1, relief="solid",
               foreground='red').place(relx=0.0, rely=0.7)
-        Label(ViewCharPage, text="Skill Proficiencies:" + str(char_dict[set_name.get()].skill_prof), background='black').place(relx=0.2,rely=0.3)
+        Label(ViewCharPage, text="Skills:\n", background='black',foreground='red').place(relx=0.2,rely=0.17)
+        x=0.2
+        for i in char_dict[set_name.get()].skill_scores:
+            Label(ViewCharPage,text= i,background='black',foreground='red').place(relx=0.2,rely=x)
+            x += 0.03
 
 
     Label(ViewCharPage, text="Your Character", fg='red', bg='black', font=('arial', 15)).place(relx=0.0, rely=0.0)
